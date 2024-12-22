@@ -2,13 +2,13 @@
 
 ## Descripción
 
-Este es un juego de Pong clásico creado con Pygame. El juego se juega con dos paletas que se mueven verticalmente en la pantalla y una pelota que rebota entre ellas. El objetivo es golpear la pelota con la paleta para que no toque el suelo.
+Este es un juego de Pong clásico creado con Pygame. El juego se juega con dos paletas que se mueven verticalmente en la pantalla y una pelota que rebota entre ellas. El objetivo es golpear la pelota con la paleta para que no toque las paredes laterales.
 
 ## Características
 
 * Juego de Pong clásico con dos paletas y una pelota
 * Se puede jugar con dos jugadores
-* La pelota rebota entre las paletas y el suelo
+* La pelota rebota entre las paletas, el suelo y el techo
 * El juego se gana cuando un jugador alcanza un total de 10 goles
 
 ## Requisitos
@@ -30,7 +30,7 @@ Este es un juego de Pong clásico creado con Pygame. El juego se juega con dos p
 
 ## Créditos
 
-* Creado por [Tu nombre]
+* Creado por angamadev
 * Utiliza Pygame para la creación del juego
 
 ## Licencia
