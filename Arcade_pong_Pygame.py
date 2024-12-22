@@ -1,7 +1,3 @@
-# Este archivo lo mandop a Bienvenido para comprobar que hago biem un commit en una rama nueva
-
-
-
 # Juego de Pong con Pygame
 
 # importar modulos y los iniciamos
@@ -43,7 +39,7 @@ groundcolor = BLUE
 
 # Damos tañaño a la ventana
 SCREEN_ANCHO = 1000
-SCREEN_ALTO = 800
+SCREEN_ALTO = 400
 size = (SCREEN_ANCHO,SCREEN_ALTO)
 screen = pygame.display.set_mode(size)
 center_x = (SCREEN_ANCHO // 2)
@@ -52,16 +48,21 @@ center_y = (SCREEN_ALTO // 2)
 # Definir reloj
 clock = pygame.time.Clock()
 
-# Cefinimos paleta de los jugadores
-paleta1 = Player(30,350,30,130)
-paleta2 = Player(940,350,30,130)
+# Definimos paleta de los jugadores
+paleta1 = Player(30,((SCREEN_ALTO // 2)-65),30,130)
+paleta2 = Player((SCREEN_ANCHO - 60),((SCREEN_ALTO // 2)-65),30,130)
 
 # definimos velocidad de las paletas
 speed_paleta1 = paleta1.movimiento(0,0)
 speed_paleta2 = paleta2.movimiento(0,0)
 
 # Creamos pelota
-pelota1 = Pelota(500,400,3,3)
+speed_pelota_x = 3
+speed_pelota_y = 3
+pelota1 = Pelota((SCREEN_ANCHO // 2),(SCREEN_ALTO // 2),speed_pelota_x,speed_pelota_y)
+
+# Definimos los numeros de goles por victoria
+goal_winner = 10
 
 # Inicializamos los Marcadores
 score_player1 = 0
@@ -98,11 +99,11 @@ while game_over is not True:
                 paleta2.speed_y = 3 
 
             # Colision paletas en suelo
-            if paleta1.cord_y > 680 or paleta2.cord_y > 680:
-                if paleta1.cord_y >= 680:
-                    paleta1.cord_y = 680
-                if paleta2.cord_y >= 680:
-                    paleta2.cord_y = 680
+            if paleta1.cord_y + paleta1.alto > SCREEN_ALTO or paleta2.cord_y + paleta2.alto > SCREEN_ALTO:
+                if paleta1.cord_y + paleta1.alto >= SCREEN_ALTO:
+                    paleta1.cord_y = SCREEN_ALTO - paleta1.alto
+                if paleta2.cord_y + paleta2.alto >= SCREEN_ALTO:
+                    paleta2.cord_y = SCREEN_ALTO - paleta2.alto
 
             # Colision de paletas en techo
             if paleta1.cord_y < 0 or paleta2.cord_y < 0:
@@ -120,54 +121,55 @@ while game_over is not True:
             if event.key == pygame.K_s:
                 paleta1.speed_y = 0   
 
-             # Player2
+            # Player2
             if event.key == pygame.K_UP:
                 paleta2.speed_y = 0
             if event.key == pygame.K_DOWN:
                 paleta2.speed_y = 0       
-       
-        pygame.key. set_repeat (10) 
+                
+        pygame.key. set_repeat (goal_winner) 
 
         # Sumar o restar el movimiento para cambiar de posicion las paletas
         paleta1.cord_y += paleta1.speed_y
         paleta2.cord_y += paleta2.speed_y
     
     # Movimiento Pelota
+    total_score = score_player1 + score_player2
     pelota1.cord_x_pelota += pelota1.speed_x_pelota 
     pelota1.cord_y_pelota += pelota1.speed_y_pelota
 
     # Colisiones de pelota contra techo y suelo
-    if pelota1.cord_y_pelota > 784 or pelota1.cord_y_pelota < 16:
+    if pelota1.cord_y_pelota > (SCREEN_ALTO - 16) or pelota1.cord_y_pelota < 16:
         pelota1.speed_y_pelota = pelota1.speed_y_pelota * (-1)
 
-     # Si pelota toca con las paredes izq o derecha
-    if pelota1.cord_x_pelota > 984 or pelota1.cord_x_pelota < 16:
+    # Si pelota toca con las paredes izq o derecha
+    if pelota1.cord_x_pelota > (SCREEN_ANCHO - 16) or pelota1.cord_x_pelota < 16:
 
-        # Si toca la pared Derecha sumar 1 punto a el marcador del jugador 1
-        if pelota1.cord_x_pelota > 984:
+        # Si toca la pared Derecha sumar 1 gol a el marcador del jugador 1
+        if pelota1.cord_x_pelota > (SCREEN_ANCHO - 16):
             score_player1 += 1
-        # Si toca la pared Izquierda sumar 1 punto a el marcador del jugador 2
+        # Si toca la pared Izquierda sumar 1 gol a el marcador del jugador 2
         if pelota1.cord_x_pelota < 16:
             score_player2 += 1
 
-        # Mostrar el ganador si suma un total de 5 puntos
-        if score_player1 == 5 or score_player2 == 5:
+        # Mostrar el ganador si suma un total de Variable(goal_winner) goles
+        if score_player1 == goal_winner or score_player2 == goal_winner:
             game_over = True
 
-            # Si jugador 1 suma 5 puntos gana la partida
-            if score_player1 == 5:
+            # Si jugador 1 suma Variable(goal_winner) goles gana la partida
+            if score_player1 == goal_winner:
                 winner = "Winner PLAYER 1"
 
-            # Si jugador 2 suma 5 puntos gana la partida
-            if score_player2 == 5:
+            # Si jugador 2 suma Variable(goal_winner) goles gana la partida
+            if score_player2 == goal_winner:
                 winner = "Winner PLAYER 2"
 
         # Cambio de direccion (rebota) la pelota si choca contra la paleta de cualquier jugador
         pelota1.speed_x_pelota = pelota1.speed_x_pelota * (-1)
 
         # Posiciono la pelota en el centro de pantalla
-        pelota1.cord_x_pelota = 500
-        pelota1.cord_y_pelota = 400
+        pelota1.cord_x_pelota = (SCREEN_ANCHO // 2)
+        pelota1.cord_y_pelota = (SCREEN_ALTO // 2)
 
         # Pausa de algun segundo para continuar
         pygame.event.wait(1000)
@@ -190,7 +192,7 @@ while game_over is not True:
         screen.blit(mostrar_winnner,[center_x - (mostrar_winnner.get_width()//2),center_y])
         
     ### ----------- Zona de dibujo ----------------
-   
+    
     player1 = pygame.draw.rect(screen,WHITE,(paleta1.cord_x,paleta1.cord_y,paleta1.ancho,paleta1.alto))
     player2 = pygame.draw.rect(screen,WHITE,(paleta2.cord_x,paleta2.cord_y,paleta2.ancho,paleta2.alto))
     pelota = pygame.draw.circle(screen,RED,(pelota1.cord_x_pelota,pelota1.cord_y_pelota),16)
